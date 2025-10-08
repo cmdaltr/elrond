@@ -1,0 +1,11 @@
+-r base.txt
+
+# Development tools
+pytest>=7.0
+pytest-cov>=3.0
+pytest-mock>=3.6
+black>=22.0
+flake8>=4.0
+mypy>=0.950
+sphinx>=4.0
+sphinx-rtd-theme>=1.0

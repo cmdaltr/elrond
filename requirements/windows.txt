@@ -1,0 +1,4 @@
+-r base.txt
+
+# Windows-specific dependencies
+pywin32>=300

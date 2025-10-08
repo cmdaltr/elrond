@@ -1,0 +1,595 @@
+# Forensic Tool Definitions for elrond
+# This file defines all external tools used by elrond across different platforms
+
+tools:
+  # ====================
+  # DISK IMAGING TOOLS
+  # ====================
+
+  ewftools:
+    name: "Expert Witness Format Tools (libewf)"
+    description: "Tools for handling E01 forensic images"
+    category: "disk_imaging"
+    platforms: [linux, macos]
+    executables:
+      - ewfmount
+      - ewfinfo
+      - ewfacquire
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+    install_methods:
+      linux: "apt-get install ewf-tools or yum install libewf"
+      macos: "brew install libewf"
+    version_check: "ewfinfo -V"
+    required: true
+
+  qemu:
+    name: "QEMU"
+    description: "QEMU with NBD support for VMDK mounting"
+    category: "disk_imaging"
+    platforms: [linux, macos]
+    executables:
+      - qemu-nbd
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+    install_methods:
+      linux: "apt-get install qemu-utils or yum install qemu-img"
+      macos: "brew install qemu"
+    required: false
+
+  libvshadow:
+    name: "libvshadow"
+    description: "Library and tools for Windows Volume Shadow Copy"
+    category: "disk_imaging"
+    platforms: [linux]
+    executables:
+      - vshadowmount
+      - vshadowinfo
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+    install_methods:
+      linux: "apt-get install libvshadow-utils"
+    required: false
+
+  apfs-fuse:
+    name: "apfs-fuse"
+    description: "FUSE driver for Apple File System (APFS)"
+    category: "disk_imaging"
+    platforms: [linux]
+    executables:
+      - apfs-fuse
+    common_paths:
+      linux:
+        - /usr/local/bin
+        - /usr/local/bin/apfs-fuse/build
+    install_methods:
+      linux: "Build from source: https://github.com/sgan81/apfs-fuse"
+    required: false
+
+  # ====================
+  # MEMORY FORENSICS
+  # ====================
+
+  volatility3:
+    name: "Volatility 3"
+    description: "Advanced memory forensics framework"
+    category: "memory"
+    platforms: [all]
+    executables:
+      - vol.py
+      - vol
+    common_paths:
+      linux:
+        - /usr/local/bin
+        - /usr/local/lib/python3.8/dist-packages/volatility3
+        - /usr/local/lib/python3.9/dist-packages/volatility3
+        - /usr/local/lib/python3.10/dist-packages/volatility3
+        - /opt/volatility3
+      macos:
+        - /usr/local/bin
+        - /usr/local/lib/python3.9/site-packages/volatility3
+        - /opt/volatility3
+      windows:
+        - C:\Program Files\Volatility3
+        - C:\Python39\Scripts
+        - C:\Python310\Scripts
+    install_methods:
+      linux: "pip3 install volatility3"
+      macos: "pip3 install volatility3"
+      windows: "pip install volatility3"
+    version_check: "--version"
+    required: true
+
+  volatility2:
+    name: "Volatility 2.6"
+    description: "Legacy memory forensics framework"
+    category: "memory"
+    platforms: [all]
+    executables:
+      - vol.py
+      - volatility
+    common_paths:
+      linux:
+        - /usr/local/bin
+        - /opt/volatility
+      macos:
+        - /usr/local/bin
+        - /opt/volatility
+      windows:
+        - C:\Program Files\Volatility
+    install_methods:
+      linux: "git clone https://github.com/volatilityfoundation/volatility.git && cd volatility && python setup.py install"
+      macos: "git clone https://github.com/volatilityfoundation/volatility.git && cd volatility && python setup.py install"
+      windows: "Download from https://github.com/volatilityfoundation/volatility/releases"
+    required: false
+
+  # ====================
+  # TIMELINE ANALYSIS
+  # ====================
+
+  plaso:
+    name: "Plaso (log2timeline)"
+    description: "Super timeline creation tool"
+    category: "timeline"
+    platforms: [linux, macos]
+    executables:
+      - log2timeline.py
+      - psteal.py
+      - psort.py
+    common_paths:
+      linux:
+        - /usr/local/bin
+        - /opt/plaso/plaso/scripts
+      macos:
+        - /usr/local/bin
+    install_methods:
+      linux: "pip3 install plaso or apt-get install plaso-tools"
+      macos: "pip3 install plaso"
+    required: false
+
+  # ====================
+  # WINDOWS ARTIFACTS
+  # ====================
+
+  analyzeMFT:
+    name: "analyzeMFT"
+    description: "Parse Windows $MFT"
+    category: "windows"
+    platforms: [all]
+    executables:
+      - analyzeMFT.py
+    common_paths:
+      linux:
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+      windows:
+        - C:\Python39\Scripts
+    install_methods:
+      linux: "pip3 install analyzeMFT"
+      macos: "pip3 install analyzeMFT"
+      windows: "pip install analyzeMFT"
+    required: false
+
+  python-evtx:
+    name: "python-evtx"
+    description: "Parse Windows Event Logs (EVTX)"
+    category: "windows"
+    platforms: [all]
+    executables:
+      - evtx_dump.py
+    common_paths:
+      linux:
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+      windows:
+        - C:\Python39\Scripts
+    install_methods:
+      linux: "pip3 install python-evtx"
+      macos: "pip3 install python-evtx"
+      windows: "pip install python-evtx"
+    required: false
+
+  regripper:
+    name: "RegRipper"
+    description: "Windows Registry parser (Perl)"
+    category: "windows"
+    platforms: [all]
+    executables:
+      - rip.pl
+    common_paths:
+      linux:
+        - /usr/local/bin
+        - /opt/regripper
+      macos:
+        - /usr/local/bin
+      windows:
+        - C:\regripper
+    install_methods:
+      linux: "Download from https://github.com/keydet89/RegRipper3.0"
+      macos: "Download from https://github.com/keydet89/RegRipper3.0"
+      windows: "Download from https://github.com/keydet89/RegRipper3.0"
+    required: false
+
+  ShimCacheParser:
+    name: "ShimCacheParser"
+    description: "Parse Windows Application Compatibility Cache"
+    category: "windows"
+    platforms: [all]
+    executables:
+      - ShimCacheParser.py
+    common_paths:
+      linux:
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+      windows:
+        - C:\Python39\Scripts
+    install_methods:
+      linux: "Download from https://github.com/mandiant/ShimCacheParser"
+      macos: "Download from https://github.com/mandiant/ShimCacheParser"
+      windows: "Download from https://github.com/mandiant/ShimCacheParser"
+    required: false
+
+  # ====================
+  # MALWARE DETECTION
+  # ====================
+
+  yara:
+    name: "YARA"
+    description: "Pattern matching for malware detection"
+    category: "malware"
+    platforms: [all]
+    executables:
+      - yara
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+      windows:
+        - C:\Program Files\YARA
+        - C:\yara
+    install_methods:
+      linux: "apt-get install yara or yum install yara"
+      macos: "brew install yara"
+      windows: "Download from https://github.com/VirusTotal/yara/releases"
+    required: false
+
+  clamav:
+    name: "ClamAV"
+    description: "Open-source antivirus engine"
+    category: "malware"
+    platforms: [all]
+    executables:
+      - clamscan
+      - freshclam
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+      windows:
+        - C:\Program Files\ClamAV
+    install_methods:
+      linux: "apt-get install clamav or yum install clamav"
+      macos: "brew install clamav"
+      windows: "Download from https://www.clamav.net/downloads"
+    required: false
+
+  # ====================
+  # FILE CARVING
+  # ====================
+
+  foremost:
+    name: "foremost"
+    description: "File carving tool"
+    category: "carving"
+    platforms: [linux, macos]
+    executables:
+      - foremost
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+    install_methods:
+      linux: "apt-get install foremost"
+      macos: "brew install foremost"
+    required: false
+
+  # ====================
+  # LINUX FORENSICS
+  # ====================
+
+  journalctl:
+    name: "journalctl"
+    description: "Query systemd journal"
+    category: "linux"
+    platforms: [linux]
+    executables:
+      - journalctl
+    common_paths:
+      linux:
+        - /usr/bin
+        - /bin
+    install_methods:
+      linux: "Included with systemd"
+    required: false
+
+  # ====================
+  # SLEUTHKIT
+  # ====================
+
+  sleuthkit:
+    name: "The Sleuth Kit"
+    description: "Forensic file system tools"
+    category: "filesystem"
+    platforms: [all]
+    executables:
+      - fls
+      - icat
+      - mmls
+      - fsstat
+    common_paths:
+      linux:
+        - /usr/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+      windows:
+        - C:\Program Files\sleuthkit\bin
+    install_methods:
+      linux: "apt-get install sleuthkit or yum install sleuthkit"
+      macos: "brew install sleuthkit"
+      windows: "Download from https://www.sleuthkit.org/sleuthkit/download.php"
+    required: false
+
+  # ====================
+  # SIEM AND LOG ANALYSIS
+  # ====================
+
+  splunk:
+    name: "Splunk Enterprise"
+    description: "SIEM platform for log analysis and visualization"
+    category: "siem"
+    platforms: [linux, macos, windows]
+    executables:
+      - splunk
+    common_paths:
+      linux:
+        - /opt/splunk/bin
+        - /usr/local/splunk/bin
+      macos:
+        - /opt/splunk/bin
+        - /Applications/Splunk/bin
+      windows:
+        - C:\Program Files\Splunk\bin
+    version_check: "version"
+    version_compatibility:
+      linux:
+        ubuntu_20.04: ">=8.1.0,<10.0.0"
+        ubuntu_22.04: ">=8.2.0,<10.0.0"
+        ubuntu_24.04: ">=9.1.0,<10.0.0"
+        debian_10: ">=8.1.0,<10.0.0"
+        debian_11: ">=8.2.0,<10.0.0"
+        debian_12: ">=9.1.0,<10.0.0"
+        rhel_8: ">=8.1.0,<10.0.0"
+        rhel_9: ">=9.0.0,<10.0.0"
+        centos_8: ">=8.1.0,<10.0.0"
+      macos:
+        macos_11: ">=8.1.0,<10.0.0"  # Big Sur
+        macos_12: ">=8.2.0,<10.0.0"  # Monterey
+        macos_13: ">=9.0.0,<10.0.0"  # Ventura
+        macos_14: ">=9.1.0,<10.0.0"  # Sonoma
+        macos_15: ">=9.2.0,<10.0.0"  # Sequoia
+      windows:
+        windows_10: ">=8.1.0,<10.0.0"
+        windows_11: ">=9.0.0,<10.0.0"
+        windows_server_2019: ">=8.1.0,<10.0.0"
+        windows_server_2022: ">=9.0.0,<10.0.0"
+    install_methods:
+      linux: "Auto-downloaded and installed based on platform"
+      macos: "Auto-downloaded and installed based on platform"
+      windows: "Auto-downloaded and installed based on platform"
+    download_urls:
+      # Note: These are template URLs - actual download requires authentication
+      # The installer will prompt for Splunk.com credentials
+      linux:
+        ubuntu_20.04: "https://download.splunk.com/products/splunk/releases/9.1.0/linux/splunk-9.1.0-1c86ca0bacc3-linux-2.6-amd64.deb"
+        ubuntu_22.04: "https://download.splunk.com/products/splunk/releases/9.2.0/linux/splunk-9.2.0-1fff88043d5f-linux-2.6-amd64.deb"
+        ubuntu_24.04: "https://download.splunk.com/products/splunk/releases/9.2.0/linux/splunk-9.2.0-1fff88043d5f-linux-2.6-amd64.deb"
+        debian_11: "https://download.splunk.com/products/splunk/releases/9.2.0/linux/splunk-9.2.0-1fff88043d5f-linux-2.6-amd64.deb"
+        rhel_8: "https://download.splunk.com/products/splunk/releases/9.1.0/linux/splunk-9.1.0-1c86ca0bacc3.x86_64.rpm"
+        rhel_9: "https://download.splunk.com/products/splunk/releases/9.2.0/linux/splunk-9.2.0-1fff88043d5f.x86_64.rpm"
+      macos:
+        macos_13: "https://download.splunk.com/products/splunk/releases/9.2.0/osx/splunk-9.2.0-1fff88043d5f-darwin-universal2.dmg"
+        macos_14: "https://download.splunk.com/products/splunk/releases/9.2.0/osx/splunk-9.2.0-1fff88043d5f-darwin-universal2.dmg"
+        macos_15: "https://download.splunk.com/products/splunk/releases/9.2.0/osx/splunk-9.2.0-1fff88043d5f-darwin-universal2.dmg"
+      windows:
+        windows_10: "https://download.splunk.com/products/splunk/releases/9.2.0/windows/splunk-9.2.0-1fff88043d5f-x64-release.msi"
+        windows_11: "https://download.splunk.com/products/splunk/releases/9.2.0/windows/splunk-9.2.0-1fff88043d5f-x64-release.msi"
+    auto_install: true
+    configuration_files:
+      - /opt/splunk/etc/system/local/limits.conf
+      - /opt/splunk/etc/system/local/user-seed.conf
+    required: false
+
+  elasticsearch:
+    name: "Elasticsearch"
+    description: "Distributed search and analytics engine"
+    category: "siem"
+    platforms: [linux, macos, windows]
+    executables:
+      - elasticsearch
+    common_paths:
+      linux:
+        - /usr/share/elasticsearch/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+      windows:
+        - C:\Program Files\Elastic\Elasticsearch\bin
+    version_check: "--version"
+    version_compatibility:
+      linux:
+        ubuntu_20.04: ">=7.10.0,<9.0.0"
+        ubuntu_22.04: ">=8.0.0,<9.0.0"
+        ubuntu_24.04: ">=8.10.0,<9.0.0"
+        debian_10: ">=7.10.0,<9.0.0"
+        debian_11: ">=8.0.0,<9.0.0"
+        debian_12: ">=8.10.0,<9.0.0"
+        rhel_8: ">=7.10.0,<9.0.0"
+        rhel_9: ">=8.6.0,<9.0.0"
+        centos_8: ">=7.10.0,<9.0.0"
+      macos:
+        macos_11: ">=7.10.0,<9.0.0"  # Big Sur
+        macos_12: ">=8.0.0,<9.0.0"   # Monterey
+        macos_13: ">=8.6.0,<9.0.0"   # Ventura
+        macos_14: ">=8.10.0,<9.0.0"  # Sonoma
+        macos_15: ">=8.12.0,<9.0.0"  # Sequoia
+      windows:
+        windows_10: ">=7.10.0,<9.0.0"
+        windows_11: ">=8.6.0,<9.0.0"
+        windows_server_2019: ">=7.10.0,<9.0.0"
+        windows_server_2022: ">=8.6.0,<9.0.0"
+    install_methods:
+      linux: "Auto-downloaded and installed based on platform"
+      macos: "Auto-downloaded and installed based on platform"
+      windows: "Auto-downloaded and installed based on platform"
+    download_urls:
+      linux:
+        ubuntu_20.04: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-amd64.deb"
+        ubuntu_22.04: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-amd64.deb"
+        ubuntu_24.04: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-amd64.deb"
+        debian_11: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-amd64.deb"
+        debian_12: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-amd64.deb"
+        rhel_8: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-x86_64.rpm"
+        rhel_9: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-x86_64.rpm"
+      macos:
+        macos_13: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-darwin-x86_64.tar.gz"
+        macos_14: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-darwin-aarch64.tar.gz"
+        macos_15: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-darwin-aarch64.tar.gz"
+      windows:
+        windows_10: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.11.0-windows-x86_64.zip"
+        windows_11: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.15.0-windows-x86_64.zip"
+    auto_install: true
+    configuration_files:
+      - /etc/elasticsearch/elasticsearch.yml
+      - /etc/elasticsearch/jvm.options
+    required: false
+
+  kibana:
+    name: "Kibana"
+    description: "Visualization and exploration tool for Elasticsearch"
+    category: "siem"
+    platforms: [linux, macos, windows]
+    executables:
+      - kibana
+    common_paths:
+      linux:
+        - /usr/share/kibana/bin
+        - /usr/local/bin
+      macos:
+        - /usr/local/bin
+        - /opt/homebrew/bin
+      windows:
+        - C:\Program Files\Elastic\Kibana\bin
+    version_check: "--version"
+    version_compatibility:
+      # Kibana version MUST match Elasticsearch version exactly
+      linux:
+        ubuntu_20.04: ">=7.10.0,<9.0.0"
+        ubuntu_22.04: ">=8.0.0,<9.0.0"
+        ubuntu_24.04: ">=8.10.0,<9.0.0"
+        debian_10: ">=7.10.0,<9.0.0"
+        debian_11: ">=8.0.0,<9.0.0"
+        debian_12: ">=8.10.0,<9.0.0"
+        rhel_8: ">=7.10.0,<9.0.0"
+        rhel_9: ">=8.6.0,<9.0.0"
+        centos_8: ">=7.10.0,<9.0.0"
+      macos:
+        macos_11: ">=7.10.0,<9.0.0"
+        macos_12: ">=8.0.0,<9.0.0"
+        macos_13: ">=8.6.0,<9.0.0"
+        macos_14: ">=8.10.0,<9.0.0"
+        macos_15: ">=8.12.0,<9.0.0"
+      windows:
+        windows_10: ">=7.10.0,<9.0.0"
+        windows_11: ">=8.6.0,<9.0.0"
+        windows_server_2019: ">=7.10.0,<9.0.0"
+        windows_server_2022: ">=8.6.0,<9.0.0"
+    install_methods:
+      linux: "Auto-downloaded and installed based on platform (version matches Elasticsearch)"
+      macos: "Auto-downloaded and installed based on platform (version matches Elasticsearch)"
+      windows: "Auto-downloaded and installed based on platform (version matches Elasticsearch)"
+    download_urls:
+      # URLs must match Elasticsearch version exactly
+      linux:
+        ubuntu_20.04: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-amd64.deb"
+        ubuntu_22.04: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-amd64.deb"
+        ubuntu_24.04: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-amd64.deb"
+        debian_11: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-amd64.deb"
+        debian_12: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-amd64.deb"
+        rhel_8: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-x86_64.rpm"
+        rhel_9: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-x86_64.rpm"
+      macos:
+        macos_13: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-darwin-x86_64.tar.gz"
+        macos_14: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-darwin-aarch64.tar.gz"
+        macos_15: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-darwin-aarch64.tar.gz"
+      windows:
+        windows_10: "https://artifacts.elastic.co/downloads/kibana/kibana-8.11.0-windows-x86_64.zip"
+        windows_11: "https://artifacts.elastic.co/downloads/kibana/kibana-8.15.0-windows-x86_64.zip"
+    auto_install: true
+    requires_version_match: "elasticsearch"  # Must match Elasticsearch version
+    configuration_files:
+      - /etc/kibana/kibana.yml
+    required: false
+
+# Custom elrond-bundled tools (in /opt/elrond/tools/)
+# These are not installed via package managers
+bundled_tools:
+  - name: "USN-Journal-Parser"
+    path: "/opt/elrond/elrond/tools/USN-Journal-Parser/usn.py"
+    description: "Parse Windows USN Journal"
+
+  - name: "INDXRipper"
+    path: "/opt/elrond/elrond/tools/INDXRipper/INDXRipper.py"
+    description: "Parse NTFS $I30 index attributes"
+
+  - name: "KStrike"
+    path: "/opt/elrond/elrond/tools/KStrike/KStrike.py"
+    description: "Parse Windows User Access Logging"
+
+  - name: "WMI_Forensics"
+    path: "/opt/elrond/elrond/tools/WMI_Forensics/"
+    description: "WMI artifact parsers"
+
+  - name: "etl-parser"
+    path: "/opt/elrond/elrond/tools/etl-parser/bin/etl2xml"
+    description: "Parse Windows ETL files"
+
+  - name: "srum_dump"
+    path: "/opt/elrond/elrond/tools/srum_dump/srum_dump.py"
+    description: "Parse SRUM database"

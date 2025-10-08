@@ -24,6 +24,9 @@ from rivendell.post.mitre.nav_config import configure_navigator
 from rivendell.post.splunk.config import configure_splunk_stack
 from rivendell.post.yara import run_yara_signatures
 
+# SIEM auto-installer
+from elrond.tools.siem_installer import SIEMInstaller
+
 
 def main(
     directory,
@@ -851,30 +854,49 @@ def main(
             )
             time.sleep(1)
         if splunk:
-            usercred, pswdcred = configure_splunk_stack(
-                verbosity,
-                output_directory,
-                case,
-                "splunk",
-                allimgs,
-            )
-            flags.append("08splunk")
-            print(
-                "  ----------------------------------------\n  -> Completed Splunk Phase.\n"
-            )
+            # Ensure Splunk is installed before configuring
+            siem_installer = SIEMInstaller()
+            if not siem_installer.ensure_siem_installed('splunk'):
+                print("\n  \033[1;31mWARNING: Splunk is not installed. Skipping Splunk phase.\033[0m\n")
+            else:
+                usercred, pswdcred = configure_splunk_stack(
+                    verbosity,
+                    output_directory,
+                    case,
+                    "splunk",
+                    allimgs,
+                )
+                flags.append("08splunk")
+                print(
+                    "  ----------------------------------------\n  -> Completed Splunk Phase.\n"
+                )
             time.sleep(1)
         if elastic:
-            configure_elastic_stack(
-                verbosity,
-                output_directory,
-                case,
-                "elastic",
-                allimgs,
-            )
-            flags.append("09elastic")
-            print(
-                "  ----------------------------------------\n  -> Completed Elastic Phase.\n"
-            )
+            # Ensure Elasticsearch and Kibana are installed before configuring
+            siem_installer = SIEMInstaller()
+            es_installed = siem_installer.ensure_siem_installed('elasticsearch')
+            kb_installed = siem_installer.ensure_siem_installed('kibana')
+
+            if not (es_installed and kb_installed):
+                print("\n  \033[1;31mWARNING: Elastic Stack is not fully installed. Skipping Elastic phase.\033[0m\n")
+            else:
+                # Verify version match
+                match, match_msg = siem_installer.version_checker.check_elasticsearch_kibana_match()
+                if not match:
+                    print(f"\n  \033[1;33mWARNING: {match_msg}\033[0m")
+                    print("  \033[1;33mProceeding with caution...\033[0m\n")
+
+                configure_elastic_stack(
+                    verbosity,
+                    output_directory,
+                    case,
+                    "elastic",
+                    allimgs,
+                )
+                flags.append("09elastic")
+                print(
+                    "  ----------------------------------------\n  -> Completed Elastic Phase.\n"
+                )
             time.sleep(1)
         if (splunk or elastic) and navigator:  # mapping to attack-navigator
             print(

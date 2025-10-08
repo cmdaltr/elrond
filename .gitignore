@@ -5,8 +5,38 @@ rivendell/*/__pycache__/*
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .vscode/*
+.idea/
 
 # Mac
 .DS_Store
 xcode/
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Elrond specific
+*.e01
+*.vmdk
+*.dd
+*.raw
+*.mem
+/tmp/elrond/
+test_output/
+*.audit

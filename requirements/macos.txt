@@ -1,0 +1,4 @@
+-r base.txt
+
+# macOS-specific dependencies
+# (currently none required beyond base)

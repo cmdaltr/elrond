@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/cyberg3cko/elrond"><img src="elrond/images/logo_trans_big.png" alt="Logo" width="400" height="400"></a>
+  <a href="https://github.com/cyberg3cko/elrond"><img src="elrond.jpg" alt="Logo" width="600" height="220"></a>
   <p align="center">
     Accelerating the collection, processing, analysis and outputting of digital forensic artefacts.
     <br><br>

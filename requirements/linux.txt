@@ -1,0 +1,4 @@
+-r base.txt
+
+# Linux-specific dependencies
+python-evtx>=0.7.0
