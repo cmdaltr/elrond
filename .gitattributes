@@ -1,2 +1,16 @@
-*.deb filter=lfs diff=lfs merge=lfs -text
-*.zip filter=lfs diff=lfs merge=lfs -text
+# Git Attributes
+# Note: Large binary files (.deb, .zip) should not be committed to the repository
+# These files should be downloaded during installation instead
+
+# Text files
+*.md text
+*.py text
+*.sh text
+*.yaml text
+*.yml text
+*.json text
+*.toml text
+
+# Binary files (do not commit large binaries - download during install instead)
+# *.deb binary
+# *.zip binary
