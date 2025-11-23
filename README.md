@@ -1,4 +1,12 @@
 <p align="center">
+  Elrond has now been merged (with [gandalf](https://github.com/cmdaltr/gandalf)) and upgraded to [rivendell](https://github.com/cmdaltr/rivendell).
+  <br><br>
+  The repo will no longer be maintained. Thank you to everyone for their interest! <3
+</p>
+
+---
+
+<p align="center">
   <a href="https://github.com/cyberg3cko/elrond"><img src="elrond.jpg" alt="Logo" width="600" height="220"></a>
   <p align="center">
     Accelerating the collection, processing, analysis and outputting of digital forensic artefacts.
