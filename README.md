@@ -1,7 +1,12 @@
 # ⚠️ Warning!<br>
-## Elrond has now been merged (with [gandalf](https://github.com/cmdaltr/gandalf)) and upgraded to [rivendell](https://github.com/cmdaltr/rivendell).<br>
-## The repo will no longer be maintained. Thank you to everyone for their interest! <3
-<br><br><br><br><br><br><br><br>
+### Elrond has now been merged (with [gandalf](https://github.com/cmdaltr/gandalf)) and upgraded to [rivendell](https://github.com/cmdaltr/rivendell).<br>
+### The repo will no longer be maintained. Thank you to everyone for their interest! <3
+<br>
+<p align="center">
+  <img src="boromir404.jpg" alt="boromir" width="600" height="220">
+</p>
+
+<br><br>
 
 ---
 ---
