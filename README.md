@@ -3,7 +3,7 @@
 ### The repo will no longer be maintained. Thank you to everyone for their interest! <3
 <br>
 <p align="center">
-  <img src="boromir404.png" alt="boromir" width="800" height="700">
+  <img src="boromir404.png" alt="boromir" width="800" height="660">
 </p>
 
 <br><br>
